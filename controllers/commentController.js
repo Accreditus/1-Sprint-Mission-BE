@@ -4,7 +4,7 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 // 중고템 댓글 등록
 export const createMarketComment = asyncHandler(async (req, res) => {
   const { content } = req.body;
-  const { marketItemId } = req; // req.params에서 marketItemId 가져오기
+  const { marketItemId } = req.params; // req.params에서 marketItemId 가져오기
   const comment = await prisma.comment.create({
     data: { content, marketItemId: parseInt(marketItemId) },
   });
@@ -14,7 +14,7 @@ export const createMarketComment = asyncHandler(async (req, res) => {
 // 게시판 댓글 등록
 export const createArticleComment = asyncHandler(async (req, res) => {
   const { content } = req.body;
-  const { articleId } = req; // req.params에서 articleId 가져오기
+  const { articleId } = req.params; // req.params에서 articleId 가져오기
   const comment = await prisma.comment.create({
     data: { content, articleId: parseInt(articleId) },
   });
