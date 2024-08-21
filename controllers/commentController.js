@@ -6,7 +6,7 @@ export const createMarketComment = asyncHandler(async (req, res) => {
   const { content } = req.body;
   const { marketItemId } = req.params; // req.params에서 marketItemId 가져오기
   const comment = await prisma.comment.create({
-    data: { content, marketItemId: parseInt(marketItemId) },
+    data: { content, marketItemId: parseInt(marketItemId, 10) },
   });
   res.status(201).json(comment);
 });
@@ -16,7 +16,7 @@ export const createArticleComment = asyncHandler(async (req, res) => {
   const { content } = req.body;
   const { articleId } = req.params; // req.params에서 articleId 가져오기
   const comment = await prisma.comment.create({
-    data: { content, articleId: parseInt(articleId) },
+    data: { content, articleId: parseInt(articleId, 10) },
   });
   res.status(201).json(comment);
 });
@@ -26,7 +26,7 @@ export const updateMarketComment = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { content } = req.body;
   const comment = await prisma.comment.update({
-    where: { id: parseInt(id) },
+    where: { id: parseInt(id, 10) },
     data: { content },
   });
   res.status(200).json(comment);
@@ -37,7 +37,7 @@ export const updateArticleComment = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { content } = req.body;
   const comment = await prisma.comment.update({
-    where: { id: parseInt(id) },
+    where: { id: parseInt(id, 10) },
     data: { content },
   });
   res.status(200).json(comment);
@@ -48,7 +48,7 @@ export const deleteMarketComment = asyncHandler(async (req, res) => {
   const { id } = req.params;
   try {
     await prisma.comment.delete({
-      where: { id: parseInt(id) },
+      where: { id: parseInt(id, 10) },
     });
     res.status(204).send();
   } catch (error) {
@@ -61,7 +61,7 @@ export const deleteArticleComment = asyncHandler(async (req, res) => {
   const { id } = req.params;
   try {
     await prisma.comment.delete({
-      where: { id: parseInt(id) },
+      where: { id: parseInt(id, 10) },
     });
     res.status(204).send();
   } catch (error) {
@@ -72,11 +72,11 @@ export const deleteArticleComment = asyncHandler(async (req, res) => {
 // 중고템 댓글 목록 조회
 export const listMarketComments = asyncHandler(async (req, res) => {
   const { cursor, size = 10 } = req.query;
-  const { marketItemId } = req; // req.params에서 marketItemId 가져오기
+  const { marketItemId } = req.params; // req.params에서 marketItemId 가져오기
   const comments = await prisma.comment.findMany({
-    where: { marketItemId: parseInt(marketItemId) },
-    take: parseInt(size),
-    cursor: cursor ? { id: parseInt(cursor) } : undefined,
+    where: { marketItemId: parseInt(marketItemId, 10) },
+    take: parseInt(size, 10),
+    cursor: cursor ? { id: parseInt(cursor, 10) } : undefined,
     skip: cursor ? 1 : 0,
     orderBy: { createdAt: "desc" },
   });
@@ -86,11 +86,11 @@ export const listMarketComments = asyncHandler(async (req, res) => {
 // 게시판 댓글 목록 조회
 export const listArticleComments = asyncHandler(async (req, res) => {
   const { cursor, size = 10 } = req.query;
-  const { articleId } = req; // req.params에서 articleId 가져오기
+  const { articleId } = req.params; // req.params에서 articleId 가져오기
   const comments = await prisma.comment.findMany({
-    where: { articleId: parseInt(articleId) },
-    take: parseInt(size),
-    cursor: cursor ? { id: parseInt(cursor) } : undefined,
+    where: { articleId: parseInt(articleId, 10) },
+    take: parseInt(size, 10),
+    cursor: cursor ? { id: parseInt(cursor, 10) } : undefined,
     skip: cursor ? 1 : 0,
     orderBy: { createdAt: "desc" },
   });
